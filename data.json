@@ -1,0 +1,81 @@
+{
+  "lastUpdated": "2026-03-09T04:11:28Z",
+  "infrastructure": {
+    "diskprices": { "status": "online", "url": "https://diskprices.info", "uptime": "99.8%" },
+    "easyhtpc": { "status": "online", "url": "https://easyhtpc.com", "uptime": "99.9%" },
+    "snapmender": { "status": "online", "url": "https://snapmender.com", "uptime": "99.7%" },
+    "ramhunter": { "status": "pending", "url": "https://ramhunter.com", "uptime": "N/A" }
+  },
+  "backups": {
+    "lastBackup": "16h ago",
+    "nextBackup": "Today 5:00 AM",
+    "schedule": "Daily @ 5:00 AM ET",
+    "status": "OK"
+  },
+  "system": {
+    "hostname": "Hals-Mac-mini.local",
+    "sessionLines": 477,
+    "model": "ollama/qwen3.5:cloud",
+    "uptime": "99.5%"
+  },
+  "metrics": {
+    "liveSites": 3,
+    "activeProjects": 8,
+    "agentTeam": 9,
+    "totalWords": "52K+",
+    "blockedTasks": 2,
+    "history": {
+      "sessionLines": [450, 455, 462, 468, 471, 474, 477],
+      "activeProjects": [7, 7, 8, 8, 8, 8, 8],
+      "liveSites": [3, 3, 3, 3, 3, 3, 3]
+    }
+  },
+  "projects": [
+    { "id": "diskprices", "icon": "💿", "title": "diskprices.info", "desc": "Storage price comparison. 78 products, 7 retailers.", "status": "LIVE", "tag": "tag-live", "progress": 100 },
+    { "id": "easyhtpc", "icon": "📺", "title": "easyhtpc.com", "desc": "HTPC/home media resource. 20 articles, 52K words.", "status": "LIVE", "tag": "tag-live", "progress": 100 },
+    { "id": "snapmender", "icon": "📸", "title": "snapmender.com", "desc": "AI photo restoration. Landing page live.", "status": "LIVE", "tag": "tag-live", "progress": 85 },
+    { "id": "ramhunter", "icon": "🧠", "title": "RamHunter.com", "desc": "RAM price comparison. 61 products, 20 articles.", "status": "BUILT", "tag": "tag-active", "progress": 90 },
+    { "id": "board", "icon": "🪙", "title": "$BOARD Token", "desc": "Solana memecoin. Awaiting credentials.", "status": "BLOCKED", "tag": "tag-blocked", "progress": 75 },
+    { "id": "faceless", "icon": "📹", "title": "Project Faceless", "desc": "Faceless YouTube channel. Research complete.", "status": "RESEARCH", "tag": "tag-research", "progress": 60 },
+    { "id": "energizedseo", "icon": "📧", "title": "EnergizedSEO", "desc": "Automated web agency. Pipeline operational.", "status": "ACTIVE", "tag": "tag-active", "progress": 95 },
+    { "id": "m4", "icon": "🖥️", "title": "M4 Mac Mini", "desc": "Migration scripts ready. Waiting for hardware.", "status": "WAITING", "tag": "tag-blocked", "progress": 50 }
+  ],
+  "tasks": {
+    "todo": [
+      { "label": "$BOARD", "name": "Awaiting credentials from Tom", "meta": "Wallet + Twitter/Telegram", "progress": 0, "color": "red" },
+      { "label": "RAMHUNTER", "name": "Register domain & DNS", "meta": "Cloudflare Pages", "progress": 0, "color": "blue" },
+      { "label": "FACELESS", "name": "Select niche & tools", "meta": "Pending decision", "progress": 0, "color": "purple" }
+    ],
+    "inProgress": [
+      { "label": "DASHBOARD", "name": "Redesign deployed", "meta": "Testing phase", "progress": 90, "color": "orange" },
+      { "label": "BACKUPS", "name": "NAS sync", "meta": "7-day retention", "progress": 100, "color": "green" }
+    ],
+    "done": [
+      { "label": "FACELESS", "name": "Research complete", "meta": "25K word report", "progress": 100 },
+      { "label": "RAMHUNTER", "name": "Site built", "meta": "61 products", "progress": 100 },
+      { "label": "PROJECT ORG", "name": "Structure standardized", "meta": "All READMEs done", "progress": 100 }
+    ]
+  },
+  "risks": [
+    { "level": "BLOCK", "text": "$BOARD Token", "sub": "Awaiting wallet + credentials", "class": "r-hi" },
+    { "level": "BLOCK", "text": "M4 Mac Mini", "sub": "Hardware on order", "class": "r-hi" },
+    { "level": "MED", "text": "Affiliate Signups", "sub": "Amazon, VPN programs", "class": "r-med" },
+    { "level": "MED", "text": "RamHunter Domain", "sub": "Needs registration", "class": "r-med" }
+  ],
+  "activity": [
+    { "time": "NOW", "color": "#00ff99", "msg": "Dashboard redesign live • Responsive, larger fonts, collapsible", "agent": "HAL 9000 · DEV" },
+    { "time": "04:11", "color": "#33aaff", "msg": "Dashboard data auto-refreshed", "agent": "System · CRON" },
+    { "time": "Earlier", "color": "#00dcc4", "msg": "Project org cleanup complete", "agent": "HAL 9000 · ORG" }
+  ],
+  "agents": [
+    { "name": "HAL 9000", "role": "CHAIR · STRATEGY", "icon": "🔴", "class": "av-chair", "status": "ACTIVE" },
+    { "name": "CTO", "role": "ARCHITECTURE · APIS", "icon": "🔧", "class": "av-tech", "status": "IDLE" },
+    { "name": "CISO", "role": "SECURITY · AUDITS", "icon": "🛡️", "class": "av-sec", "status": "IDLE" },
+    { "name": "CMO", "role": "MARKETING · AFFILIATES", "icon": "📢", "class": "av-biz", "status": "IDLE" },
+    { "name": "SCIO", "role": "SEO · INTEL", "icon": "🔍", "class": "av-intel", "status": "IDLE" },
+    { "name": "DataAnalyst", "role": "METRICS · REPORTS", "icon": "📊", "class": "av-data", "status": "IDLE" },
+    { "name": "LeadDeveloper", "role": "CODE · TESTING", "icon": "💻", "class": "av-dev", "status": "IDLE" },
+    { "name": "ProductManager", "role": "REQUIREMENTS · BACKLOG", "icon": "📋", "class": "av-prod", "status": "IDLE" },
+    { "name": "UXUIDesigner", "role": "UI/UX · DESIGN", "icon": "🎨", "class": "av-ux", "status": "IDLE" }
+  ]
+}

@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAL 9000 — The Boardroom [REDESIGN]</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    /* Core colors - improved contrast */
+    --bg: #02060a;
+    --bg-elevated: #050d14;
+    --panel: #081520;
+    --panel-hover: #0a1a28;
+    --border: #1a3a4a;
+    --border-bright: #2a5a6a;
+    
+    /* Accents - reduced intensity for less eye strain */
+    --accent: #00dcc4;
+    --accent-dim: #008a7a;
+    --accent2: #ff6a33;
+    --accent3: #ffcc33;
+    
+    /* Text - higher contrast */
+    --text: #e0f0f5;
+    --text-dim: #6a9aab;
+    --text-muted: #4a6a7a;
+    
+    /* Status colors */
+    --red: #ff4455;
+    --green: #00ff99;
+    --green-dim: #00aa66;
+    --blue: #33aaff;
+    --purple: #cc66ff;
+    --orange: #ff9933;
+    
+    /* Spacing - optimized for 27" */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 28px;
+    --spacing-xl: 40px;
+    
+    /* Typography - larger, more readable */
+    --font-xs: 13px;
+    --font-sm: 15px;
+    --font-md: 18px;
+    --font-lg: 22px;
+    --font-xl: 28px;
+    --font-xxl: 36px;
+    
+    /* Panel sizing */
+    --panel-radius: 4px;
+    --panel-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: var(--font-sm);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.5;
+    background-image:
+      radial-gradient(ellipse 100% 50% at 50% 0%, rgba(0,220,196,0.03) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,220,196,0.02) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,220,196,0.02) 40px);
+  }
+
+  /* ==================== HEADER ==================== */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,21,32,0.98);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .hal-lens {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 35%, #4a0000 0%, #2a0000 30%, #000 60%, #2a0000 100%);
+    border: 2px solid #ff4433;
+    box-shadow: 0 0 16px rgba(255,60,0,0.7), 0 0 40px rgba(255,60,0,0.3), inset 0 0 14px rgba(255,80,0,0.4);
+    position: relative;
+    animation: halPulse 3s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  @keyframes halPulse {
+    0%,100% { box-shadow: 0 0 14px rgba(255,60,0,0.7), 0 0 35px rgba(255,60,0,0.3), inset 0 0 12px rgba(255,80,0,0.4); }
+    50% { box-shadow: 0 0 28px rgba(255,60,0,0.95), 0 0 65px rgba(255,60,0,0.45), inset 0 0 22px rgba(255,100,0,0.6); }
+  }
+
+  .hal-lens svg {
+    width: 100%; height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .logo-text {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: var(--font-xl);
+    color: #ff4433;
+    letter-spacing: 4px;
+    text-shadow: 0 0 24px rgba(255,68,0,0.7);
+  }
+
+  .logo-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .header-center {
+    text-align: center;
+    flex: 1;
+  }
+
+  .mission-label {
+    font-family: 'Orbitron', monospace;
+    font-size: var(--font-xs);
+    letter-spacing: 6px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .mission-title {
+    font-family: 'Orbitron', monospace;
+    font-size: var(--font-lg);
+    font-weight: 600;
+    color: var(--accent3);
+    text-shadow: 0 0 14px rgba(255,204,0,0.5);
+    letter-spacing: 3px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+  }
+
+  .status-pill {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(0,255,153,0.1);
+    border: 1px solid rgba(0,255,153,0.4);
+    border-radius: 3px;
+    padding: 8px 18px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-sm);
+    color: var(--green);
+    letter-spacing: 2px;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: blink 1.5s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--green);
+  }
+
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .clock {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-md);
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  /* ==================== MAIN GRID ==================== */
+  .main {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: var(--spacing-md);
+    max-width: 2560px;
+    margin: 0 auto;
+  }
+
+  /* Responsive breakpoints */
+  @media (min-width: 2800px) {
+    .main { grid-template-columns: repeat(5, 1fr); }
+  }
+  
+  @media (max-width: 2200px) {
+    .main { grid-template-columns: repeat(3, 1fr); }
+  }
+  
+  @media (max-width: 1600px) {
+    .main { grid-template-columns: 1fr; }
+  }
+
+  /* ==================== PANELS ==================== */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--panel-radius);
+    padding: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease both;
+    box-shadow: var(--panel-shadow);
+    transition: all 0.3s ease;
+  }
+
+  .panel:hover {
+    border-color: var(--border-bright);
+    background: var(--panel-hover);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.7;
+  }
+
+  /* Collapsible panel header */
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .panel-header:hover .panel-title {
+    color: var(--accent);
+  }
+
+  .panel-title {
+    font-family: 'Orbitron', monospace;
+    font-size: var(--font-md);
+    letter-spacing: 5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: color 0.3s;
+  }
+
+  .panel-toggle {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim);
+    transition: transform 0.3s;
+  }
+
+  .panel.collapsed .panel-toggle {
+    transform: rotate(-90deg);
+  }
+
+  .panel.collapsed .panel-content {
+    display: none;
+  }
+
+  .panel-content {
+    transition: opacity 0.3s;
+  }
+
+  /* ==================== OBJECTIVES PANEL ==================== */
+  .objectives-panel {
+    grid-column: 1 / -1;
+    padding: var(--spacing-lg) var(--spacing-xl);
+  }
+
+  .objectives-panel::before {
+    background: linear-gradient(90deg, transparent, var(--accent3), transparent);
+  }
+
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .obj-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--panel-radius);
+    padding: var(--spacing-lg);
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .obj-card:hover {
+    border-color: var(--accent);
+    background: rgba(0,220,196,0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,220,196,0.15);
+  }
+
+  .obj-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .obj-icon {
+    font-size: 32px;
+    margin-bottom: var(--spacing-sm);
+    display: block;
+    transition: filter 0.3s;
+  }
+
+  .obj-card:hover .obj-icon { filter: drop-shadow(0 0 10px var(--accent)); }
+
+  .obj-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: var(--font-lg);
+    color: var(--accent);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.2;
+  }
+
+  .obj-desc {
+    font-size: var(--font-sm);
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .obj-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    letter-spacing: 2px;
+    border-radius: 2px;
+  }
+
+  .tag-live { background: rgba(0,255,153,0.12); color: var(--green); border: 1px solid rgba(0,255,153,0.4); }
+  .tag-active { background: rgba(255,204,0,0.12); color: var(--accent3); border: 1px solid rgba(255,204,0,0.4); }
+  .tag-research { background: rgba(51,170,255,0.12); color: var(--blue); border: 1px solid rgba(51,170,255,0.4); }
+  .tag-paused { background: rgba(74,122,144,0.15); color: var(--text-dim); border: 1px solid rgba(74,122,144,0.4); }
+  .tag-blocked { background: rgba(255,68,85,0.15); color: var(--red); border: 1px solid rgba(255,68,85,0.4); }
+  .tag-biz { background: rgba(255,106,51,0.15); color: var(--accent2); border: 1px solid rgba(255,106,51,0.4); }
+
+  /* ==================== AGENTS PANEL ==================== */
+  .agents-panel { grid-column: span 1; }
+
+  .agent-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid rgba(26,58,74,0.5);
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .agent-row:last-child { border-bottom: none; }
+  .agent-row:hover { padding-left: var(--spacing-xs); background: rgba(0,220,196,0.03); }
+
+  .agent-avatar {
+    width: 40px; height: 40px;
+    border-radius: var(--panel-radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: var(--font-lg);
+    flex-shrink: 0;
+  }
+
+  .av-chair { background: rgba(255,68,0,0.18); border: 1px solid rgba(255,68,0,0.5); }
+  .av-tech { background: rgba(51,170,255,0.12); border: 1px solid rgba(51,170,255,0.35); }
+  .av-sec { background: rgba(255,68,85,0.12); border: 1px solid rgba(255,68,85,0.35); }
+  .av-biz { background: rgba(255,106,51,0.12); border: 1px solid rgba(255,106,51,0.35); }
+  .av-dev { background: rgba(0,220,196,0.12); border: 1px solid rgba(0,220,196,0.35); }
+  .av-data { background: rgba(204,102,255,0.12); border: 1px solid rgba(204,102,255,0.35); }
+  .av-prod { background: rgba(0,255,153,0.12); border: 1px solid rgba(0,255,153,0.35); }
+  .av-ux { background: rgba(255,204,0,0.12); border: 1px solid rgba(255,204,0,0.35); }
+  .av-intel { background: rgba(51,170,255,0.15); border: 1px solid rgba(51,170,255,0.4); }
+
+  .agent-info { flex: 1; min-width: 0; }
+
+  .agent-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: var(--font-md);
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .agent-role {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .agent-status {
+    font-size: var(--font-xs);
+    font-family: 'Share Tech Mono', monospace;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .s-active { background: rgba(0,255,153,0.12); color: var(--green); border: 1px solid rgba(0,255,153,0.35); }
+  .s-idle { background: rgba(74,122,144,0.15); color: var(--text-dim); border: 1px solid rgba(74,122,144,0.35); }
+  .s-alert { background: rgba(255,204,0,0.12); color: var(--accent3); border: 1px solid rgba(255,204,0,0.35); }
+
+  /* ==================== TASK BOARD ==================== */
+  .tasks-panel { grid-column: span 2; }
+
+  .task-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .task-col {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--panel-radius);
+    padding: var(--spacing-md);
+  }
+
+  .task-col-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .col-count {
+    background: var(--border);
+    color: var(--text);
+    border-radius: 2px;
+    padding: 2px 8px;
+    font-size: var(--font-xs);
+  }
+
+  .task-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--panel-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .task-card:hover {
+    border-color: rgba(0,220,196,0.4);
+    background: rgba(0,220,196,0.05);
+    transform: translateX(3px);
+  }
+
+  .task-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+  }
+
+  .task-name {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .task-meta {
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .task-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .task-progress {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    position: relative;
+    transition: width 0.5s ease;
+  }
+
+  .task-progress.orange { background: var(--orange); }
+  .task-progress.gold { background: var(--accent3); }
+  .task-progress.blue { background: var(--blue); }
+  .task-progress.purple { background: var(--purple); }
+
+  /* ==================== METRICS PANEL WITH CHARTS ==================== */
+  .metrics-panel { grid-column: span 1; }
+
+  .metric-chart-container {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .metric-chart {
+    height: 140px;
+    position: relative;
+  }
+
+  .metric-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+
+  .metric-mini {
+    text-align: center;
+    padding: var(--spacing-sm);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--panel-radius);
+  }
+
+  .metric-mini-value {
+    font-family: 'Orbitron', monospace;
+    font-size: var(--font-xl);
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .metric-mini-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  /* ==================== BOTTOM ROW ==================== */
+  .bottom-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .portfolio-panel { grid-column: span 1; }
+  .risks-panel { grid-column: span 1; }
+  .activity-panel { grid-column: span 1; }
+
+  .project-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid rgba(26,58,74,0.5);
+  }
+
+  .project-item:last-child { border-bottom: none; }
+
+  .project-badge {
+    width: 5px;
+    flex-shrink: 0;
+    border-radius: 3px;
+    align-self: stretch;
+    min-height: 50px;
+  }
+
+  .proj-title {
+    font-weight: 700;
+    font-size: var(--font-md);
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .proj-desc { 
+    font-size: var(--font-sm); 
+    color: var(--text-dim); 
+    line-height: 1.5; 
+    margin-bottom: var(--spacing-sm); 
+  }
+
+  .proj-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .proj-pct {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--accent);
+  }
+
+  .mini-bar {
+    width: 100px; height: 4px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .mini-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+  /* Risk items */
+  .risk-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid rgba(26,58,74,0.4);
+  }
+
+  .risk-item:last-child { border-bottom: none; }
+
+  .risk-level {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+    height: fit-content;
+  }
+
+  .r-hi { background: rgba(255,68,85,0.15); color: var(--red); border: 1px solid rgba(255,68,85,0.4); }
+  .r-med { background: rgba(255,153,51,0.15); color: var(--orange); border: 1px solid rgba(255,153,51,0.4); }
+  .r-low { background: rgba(51,170,255,0.12); color: var(--blue); border: 1px solid rgba(51,170,255,0.35); }
+
+  .risk-text {
+    font-weight: 600;
+    font-size: var(--font-md);
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .risk-sub { 
+    font-size: var(--font-sm); 
+    color: var(--text-dim); 
+    line-height: 1.4; 
+  }
+
+  /* Activity feed */
+  .activity-item {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid rgba(26,58,74,0.4);
+  }
+
+  .activity-item:last-child { border-bottom: none; }
+
+  .activity-time {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    padding-top: 2px;
+    min-width: 70px;
+  }
+
+  .activity-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 0 6px currentColor;
+  }
+
+  .activity-content { flex: 1; }
+
+  .activity-msg { 
+    font-size: var(--font-sm); 
+    color: var(--text); 
+    line-height: 1.5; 
+    margin-bottom: 2px;
+  }
+
+  .activity-agent { 
+    font-size: var(--font-xs); 
+    color: var(--text-dim); 
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* ==================== FOOTER ==================== */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: var(--spacing-md) var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(8,21,32,0.95);
+    backdrop-filter: blur(12px);
+  }
+
+  .footer-left {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: var(--font-xs);
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+
+  .footer-right {
+    display: flex;
+    gap: var(--spacing-xl);
+  }
+
+  .footer-stat {
+    text-align: center;
+  }
+
+  .footer-val {
+    font-family: 'Orbitron', monospace;
+    font-size: var(--font-lg);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .footer-lbl {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  /* ==================== SCANLINE OVERLAY ==================== */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.06) 3px,
+      rgba(0,0,0,0.06) 4px
+    );
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  .panel::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 20px; height: 20px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    opacity: 0.4;
+  }
+
+  /* ==================== SCROLLBARS ==================== */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-bright); }
+
+  /* ==================== UTILITY CLASSES ==================== */
+  .loading { opacity: 0.5; }
+  .error { color: var(--red); }
+  .text-accent { color: var(--accent); }
+  .text-green { color: var(--green); }
+  .text-red { color: var(--red); }
+  .text-gold { color: var(--accent3); }
+
+  /* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+  @media (max-width: 2200px) {
+    .tasks-panel { grid-column: span 1; }
+    .bottom-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 1600px) {
+    .objectives-grid { grid-template-columns: 1fr; }
+    .task-cols { grid-template-columns: 1fr; }
+    .metric-summary { grid-template-columns: 1fr; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="hal-lens">
+      <svg viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="28" r="25" fill="none" stroke="#ff4433" stroke-width="0.6" opacity="0.6"/>
+        <g opacity="0.55">
+          <path d="M28 28 L28 3 A25 25 0 0 1 45 13 Z" fill="#550000"/>
+          <path d="M28 28 L45 13 A25 25 0 0 1 53 28 Z" fill="#3a0000"/>
+          <path d="M28 28 L53 28 A25 25 0 0 1 45 43 Z" fill="#550000"/>
+          <path d="M28 28 L45 43 A25 25 0 0 1 28 53 Z" fill="#3a0000"/>
+          <path d="M28 28 L28 53 A25 25 0 0 1 11 43 Z" fill="#550000"/>
+          <path d="M28 28 L11 43 A25 25 0 0 1 3 28 Z" fill="#3a0000"/>
+          <path d="M28 28 L3 28 A25 25 0 0 1 11 13 Z" fill="#550000"/>
+          <path d="M28 28 L11 13 A25 25 0 0 1 28 3 Z" fill="#3a0000"/>
+        </g>
+        <circle cx="28" cy="28" r="15" fill="#0a0000" stroke="#ff4433" stroke-width="1" opacity="0.9"/>
+        <circle cx="28" cy="28" r="11" fill="none" stroke="#ff6633" stroke-width="0.6" opacity="0.6"/>
+        <radialGradient id="lensGrad" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stop-color="#ff4433" stop-opacity="0.95"/>
+          <stop offset="40%" stop-color="#cc2200" stop-opacity="0.75"/>
+          <stop offset="100%" stop-color="#000" stop-opacity="1"/>
+        </radialGradient>
+        <circle cx="28" cy="28" r="10" fill="url(#lensGrad)"/>
+        <ellipse cx="24" cy="24" rx="3" ry="2" fill="white" opacity="0.2" transform="rotate(-20,24,24)"/>
+        <circle cx="28" cy="28" r="2" fill="#ff8844" opacity="0.95"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">HAL 9000</div>
+      <div class="logo-sub">The Boardroom · AI Agent Organization</div>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="mission-label">Active Mission</div>
+    <div class="mission-title" id="mission-title">PROACTIVE INTELLIGENCE OPERATIONS</div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">ALL SYSTEMS NOMINAL</span>
+    </div>
+    <div class="clock" id="clock">--:--:-- EST</div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main">
+
+  <!-- OBJECTIVES ROW (Full Width) -->
+  <div class="panel objectives-panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+      <div class="panel-title">🎯 Active Projects</div>
+      <div class="panel-toggle">▼</div>
+    </div>
+    <div class="panel-content">
+      <div class="objectives-grid" id="projects-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENTS PANEL -->
+  <div class="panel agents-panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+      <div class="panel-title">🤖 The Boardroom</div>
+      <div class="panel-toggle">▼</div>
+    </div>
+    <div class="panel-content">
+      <div id="agents-list">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK BOARD -->
+  <div class="panel tasks-panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+      <div class="panel-title">📋 Task Board</div>
+      <div class="panel-toggle">▼</div>
+    </div>
+    <div class="panel-content">
+      <div class="task-cols" id="task-cols">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- METRICS PANEL WITH CHARTS -->
+  <div class="panel metrics-panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+      <div class="panel-title">📡 System Metrics</div>
+      <div class="panel-toggle">▼</div>
+    </div>
+    <div class="panel-content">
+      <div class="metric-chart-container">
+        <canvas id="metricsChart" class="metric-chart"></canvas>
+      </div>
+      <div class="metric-summary" id="metric-summary">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+
+    <!-- SITE PORTFOLIO -->
+    <div class="panel portfolio-panel">
+      <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-title">🌐 Site Portfolio</div>
+        <div class="panel-toggle">▼</div>
+      </div>
+      <div class="panel-content">
+        <div id="portfolio-list">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- RISK REGISTER -->
+    <div class="panel risks-panel">
+      <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-title">⚠️ Risks & Blockers</div>
+        <div class="panel-toggle">▼</div>
+      </div>
+      <div class="panel-content">
+        <div id="risks-list">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY FEED -->
+    <div class="panel activity-panel">
+      <div class="panel-header" onclick="togglePanel(this)">
+        <div class="panel-title">📡 Activity Feed</div>
+        <div class="panel-toggle">▼</div>
+      </div>
+      <div class="panel-content">
+        <div id="activity-list">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">THE BOARDROOM · HAL 9000 MISSION CONTROL · <span id="last-updated">--:--</span></div>
+  <div class="footer-right">
+    <div class="footer-stat">
+      <div class="footer-val" id="stat-projects">--</div>
+      <div class="footer-lbl">Projects</div>
+    </div>
+    <div class="footer-stat">
+      <div class="footer-val" id="stat-agents">--</div>
+      <div class="footer-lbl">Agents</div>
+    </div>
+    <div class="footer-stat">
+      <div class="footer-val" id="stat-sites">--</div>
+      <div class="footer-lbl">Live Sites</div>
+    </div>
+    <div class="footer-stat">
+      <div class="footer-val" id="stat-words">--</div>
+      <div class="footer-lbl">Words</div>
+    </div>
+    <div class="footer-stat">
+      <div class="footer-val" style="color: var(--red);" id="stat-blocked">--</div>
+      <div class="footer-lbl">Blocked</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== PANEL COLLAPSE ====================
+function togglePanel(header) {
+  const panel = header.closest('.panel');
+  panel.classList.toggle('collapsed');
+}
+
+// ==================== CLOCK ====================
+function updateClock() {
+  const now = new Date();
+  const est = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  const h = String(est.getHours()).padStart(2,'0');
+  const m = String(est.getMinutes()).padStart(2,'0');
+  const s = String(est.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}:${s} EST`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ==================== STATIC DATA ====================
+const staticData = {
+  projects: [
+    { id: 'diskprices', icon: '💿', title: 'diskprices.info', desc: 'Storage price comparison site. 78 products, 7 retailers. Live, awaiting affiliate signups.', status: 'LIVE', tag: 'tag-live' },
+    { id: 'easyhtpc', icon: '📺', title: 'easyhtpc.com', desc: 'HTPC/home media resource site. 20 articles, 52K words. Tom\'s personal hobby project.', status: 'LIVE', tag: 'tag-live' },
+    { id: 'snapmender', icon: '📸', title: 'snapmender.com', desc: 'AI photo restoration SaaS. Reference-guided face repair. Landing page live, API integration pending.', status: 'LIVE', tag: 'tag-live' },
+    { id: 'board', icon: '🪙', title: '$BOARD Token', desc: 'Solana memecoin "first memecoin run by AI agents." Prep complete, awaiting wallet + credentials from Tom.', status: 'BLOCKED', tag: 'tag-blocked' },
+    { id: 'silentdepths', icon: '🎮', title: 'Silent Depths', desc: 'Godot game development. Phase 1 complete, paused at user request. Needs migration to this machine.', status: 'PAUSED', tag: 'tag-paused' },
+    { id: 'ramhunter', icon: '🧠', title: 'RamHunter.com', desc: 'RAM price comparison site. 61 products, 20 articles. Built, awaiting domain registration/DNS.', status: 'BUILT', tag: 'tag-active' },
+    { id: 'faceless', icon: '📺', title: 'Project Faceless', desc: 'Faceless YouTube channel business. Deep research complete. Top niches: Psychology Facts, AI Tools.', status: 'RESEARCH', tag: 'tag-research' },
+    { id: 'm4', icon: '🖥️', title: 'M4 Mac Mini Migration', desc: 'Migration scripts ready. Waiting for hardware. TTS server down pending migration.', status: 'WAITING', tag: 'tag-blocked' }
+  ],
+  agents: [
+    { name: 'HAL 9000', role: 'CHAIR · COORDINATION · STRATEGY', icon: '🔴', class: 'av-chair', status: 'ACTIVE' },
+    { name: 'CTO', role: 'ARCHITECTURE · APIS · INFRA', icon: '🔧', class: 'av-tech', status: 'IDLE' },
+    { name: 'CISO', role: 'SECURITY · COMPLIANCE · AUDITS', icon: '🛡️', class: 'av-sec', status: 'IDLE' },
+    { name: 'CMO', role: 'MARKETING · AFFILIATES · CTAS', icon: '📢', class: 'av-biz', status: 'IDLE' },
+    { name: 'SCIO', role: 'SEO · COMPETITIVE INTEL · TRENDS', icon: '🔍', class: 'av-intel', status: 'IDLE' },
+    { name: 'DataAnalyst', role: 'METRICS · REPORTS · INSIGHTS', icon: '📊', class: 'av-data', status: 'IDLE' },
+    { name: 'LeadDeveloper', role: 'CODE · TESTING · IMPLEMENTATION', icon: '💻', class: 'av-dev', status: 'IDLE' },
+    { name: 'ProductManager', role: 'REQUIREMENTS · BACKLOG · USERS', icon: '📋', class: 'av-prod', status: 'IDLE' },
+    { name: 'UXUIDesigner', role: 'UI/UX · WIREFRAMES · DESIGN', icon: '🎨', class: 'av-ux', status: 'IDLE' }
+  ],
+  tasks: {
+    todo: [
+      { label: '$BOARD TOKEN', name: 'Awaiting credentials from Tom', meta: 'Wallet + Twitter/Telegram', progress: 0 },
+      { label: 'RAMHUNTER', name: 'Register domain & configure DNS', meta: 'Point to Cloudflare Pages', progress: 0, color: 'blue' },
+      { label: 'FACELESS', name: 'Select niche & setup tools', meta: 'Pending Tom decision', progress: 0, color: 'purple' }
+    ],
+    inProgress: [
+      { label: 'INFRA', name: 'Session indexing for memory search', meta: 'Config updated, gateway restart pending', progress: 50, color: 'orange' },
+      { label: 'BACKUPS', name: 'NAS backup sync & cleanup', meta: 'Scripts updated, retention configured', progress: 90 }
+    ],
+    done: [
+      { label: 'FACELESS', name: 'Deep-dive research complete', meta: '25K word report delivered', progress: 100 },
+      { label: 'RAMHUNTER', name: 'Site build complete', meta: '61 products, 20 articles', progress: 100 },
+      { label: 'INFRA', name: 'Backup scripts updated', meta: 'NAS warning + retention', progress: 100 },
+      { label: 'INFRA', name: 'NAS sync completed', meta: '7-day retention configured', progress: 100 }
+    ]
+  },
+  metrics: [
+    { label: 'Live Sites', value: 3, color: '#00ff99' },
+    { label: 'Active Projects', value: 8, color: '#ffcc33' },
+    { label: 'Agent Team', value: 9, color: '#00dcc4' },
+    { label: 'Total Words', value: 52, color: '#33aaff', suffix: 'K' },
+    { label: 'Blocked Items', value: 2, color: '#ff4455' }
+  ],
+  portfolio: [
+    { title: 'diskprices.info', desc: 'Storage price comparison. 78 products, 7 retailers, dark theme.', status: 'LIVE', progress: 100, color: '#00ff99' },
+    { title: 'easyhtpc.com', desc: 'HTPC resource site. Tom\'s hobby project. 20 articles, 52K words.', status: 'LIVE', progress: 100, color: '#00ff99' },
+    { title: 'snapmender.com', desc: 'AI photo restoration. Landing page live. API integration pending.', status: 'LIVE', progress: 100, color: '#00ff99' },
+    { title: 'ramhunter.com', desc: 'RAM price comparison. 61 products, 20 articles. Needs DNS.', status: 'BUILT', progress: 90, color: '#ffcc33' }
+  ],
+  risks: [
+    { level: 'BLOCK', text: '$BOARD Token Launch', sub: 'Awaiting wallet ($150 SOL) + Twitter/Telegram credentials', class: 'r-hi' },
+    { level: 'BLOCK', text: 'M4 Mac Mini Migration', sub: 'Hardware on order. TTS server down pending migration.', class: 'r-hi' },
+    { level: 'MED', text: 'Affiliate Signups Pending', sub: 'Amazon Associates, VPN programs for easyhtpc', class: 'r-med' },
+    { level: 'MED', text: 'RamHunter Domain', sub: 'Domain needs registration and DNS configuration', class: 'r-med' },
+    { level: 'LOW', text: 'Model Cost Budget', sub: 'Keep costs reasonable, prefer local models', class: 'r-low' },
+    { level: 'LOW', text: 'Session Size Warning', sub: '3 sessions approaching context limits', class: 'r-low' }
+  ],
+  activity: [
+    { time: 'NOW', color: '#00ff99', msg: 'NAS backup sync completed · 7-day retention configured', agent: 'HAL 9000 · INFRA' },
+    { time: '2m ago', color: '#00dcc4', msg: 'Session indexing enabled for memory search', agent: 'HAL 9000 · INFRA' },
+    { time: '1h ago', color: '#cc66ff', msg: 'Project Faceless research complete · 25K word report', agent: 'HAL 9000 · RESEARCH' },
+    { time: 'Today', color: '#33aaff', msg: 'RamHunter site built · 61 products, 20 articles', agent: 'HAL 9000 · DEV' },
+    { time: 'Feb 24', color: '#00ff99', msg: 'snapmender.com domain live · Cloudflare DNS configured', agent: 'HAL 9000 · INFRA' },
+    { time: 'Feb 21', color: '#00ff99', msg: 'easyhtpc.com launched · 20 articles published', agent: 'HAL 9000 · CONTENT' },
+    { time: 'Feb 18', color: '#00ff99', msg: 'diskprices.info launched · 78 products indexed', agent: 'HAL 9000 · DEV' }
+  ]
+};
+
+// ==================== RENDER FUNCTIONS ====================
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  grid.innerHTML = staticData.projects.map((p, i) => `
+    <div class="obj-card">
+      <div class="obj-num">PROJECT-00${String(i+1).padStart(2,'0')}</div>
+      <span class="obj-icon">${p.icon}</span>
+      <div class="obj-title">${p.title}</div>
+      <div class="obj-desc">${p.desc}</div>
+      <span class="obj-tag ${p.tag}">${p.status}</span>
+    </div>
+  `).join('');
+}
+
+function renderAgents() {
+  const list = document.getElementById('agents-list');
+  list.innerHTML = staticData.agents.map(a => {
+    const statusClass = a.status === 'ACTIVE' ? 's-active' : 's-idle';
+    return `
+      <div class="agent-row">
+        <div class="agent-avatar ${a.class}">${a.icon}</div>
+        <div class="agent-info">
+          <div class="agent-name">${a.name}</div>
+          <div class="agent-role">${a.role}</div>
+        </div>
+        <div class="agent-status ${statusClass}">${a.status}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTasks() {
+  const container = document.getElementById('task-cols');
+  
+  const todoHtml = staticData.tasks.todo.map(t => `
+    <div class="task-card">
+      <div class="task-label" style="color: ${t.color ? `var(--${t.color})` : 'var(--red)'};">${t.label}</div>
+      <div class="task-name">${t.name}</div>
+      <div class="task-meta">${t.meta}</div>
+      <div class="task-bar"><div class="task-progress ${t.color || ''}" style="width: ${t.progress}%"></div></div>
+    </div>
+  `).join('');
+  
+  const progressHtml = staticData.tasks.inProgress.map(t => `
+    <div class="task-card">
+      <div class="task-label" style="color: ${t.color ? `var(--${t.color})` : 'var(--accent)'};">${t.label}</div>
+      <div class="task-name">${t.name}</div>
+      <div class="task-meta">${t.meta}</div>
+      <div class="task-bar"><div class="task-progress ${t.color || ''}" style="width: ${t.progress}%"></div></div>
+    </div>
+  `).join('');
+  
+  const doneHtml = staticData.tasks.done.map(t => `
+    <div class="task-card" style="opacity: 0.7;">
+      <div class="task-label" style="color: var(--green);">${t.label}</div>
+      <div class="task-name">${t.name}</div>
+      <div class="task-meta">${t.meta}</div>
+      <div class="task-bar"><div class="task-progress" style="width: 100%; background: var(--green);"></div></div>
+    </div>
+  `).join('');
+  
+  container.innerHTML = `
+    <div class="task-col">
+      <div class="task-col-title" style="color: var(--text-dim);">To Do <span class="col-count">${staticData.tasks.todo.length}</span></div>
+      ${todoHtml}
+    </div>
+    <div class="task-col">
+      <div class="task-col-title" style="color: var(--accent);">In Progress <span class="col-count">${staticData.tasks.inProgress.length}</span></div>
+      ${progressHtml}
+    </div>
+    <div class="task-col">
+      <div class="task-col-title" style="color: var(--green);">Done <span class="col-count">${staticData.tasks.done.length}</span></div>
+      ${doneHtml}
+    </div>
+  `;
+}
+
+function renderMetricsChart() {
+  const ctx = document.getElementById('metricsChart').getContext('2d');
+  
+  // Gradient backgrounds
+  const gradient1 = ctx.createLinearGradient(0, 0, 0, 140);
+  gradient1.addColorStop(0, 'rgba(0, 220, 196, 0.3)');
+  gradient1.addColorStop(1, 'rgba(0, 220, 196, 0.05)');
+  
+  const gradient2 = ctx.createLinearGradient(0, 0, 0, 140);
+  gradient2.addColorStop(0, 'rgba(255, 204, 51, 0.3)');
+  gradient2.addColorStop(1, 'rgba(255, 204, 51, 0.05)');
+  
+  const gradient3 = ctx.createLinearGradient(0, 0, 0, 140);
+  gradient3.addColorStop(0, 'rgba(51, 170, 255, 0.3)');
+  gradient3.addColorStop(1, 'rgba(51, 170, 255, 0.05)');
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [
+        {
+          label: 'Active Projects',
+          data: [6, 7, 7, 8, 8, 8, 8],
+          borderColor: '#ffcc33',
+          backgroundColor: gradient2,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 5
+        },
+        {
+          label: 'Live Sites',
+          data: [2, 2, 3, 3, 3, 3, 3],
+          borderColor: '#00ff99',
+          backgroundColor: gradient1,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 5
+        },
+        {
+          label: 'Tasks Completed',
+          data: [8, 12, 15, 18, 22, 24, 26],
+          borderColor: '#33aaff',
+          backgroundColor: gradient3,
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#6a9aab',
+            font: { family: 'Share Tech Mono', size: 11 }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(26, 58, 74, 0.5)' },
+          ticks: { color: '#6a9aab', font: { family: 'Share Tech Mono', size: 10 } }
+        },
+        x: {
+          grid: { color: 'rgba(26, 58, 74, 0.3)' },
+          ticks: { color: '#6a9aab', font: { family: 'Share Tech Mono', size: 10 } }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  });
+}
+
+function renderMetricSummary() {
+  const container = document.getElementById('metric-summary');
+  container.innerHTML = staticData.metrics.map(m => `
+    <div class="metric-mini">
+      <div class="metric-mini-value" style="color: ${m.color};">${m.value}${m.suffix || ''}</div>
+      <div class="metric-mini-label">${m.label}</div>
+    </div>
+  `).join('');
+}
+
+function renderPortfolio() {
+  const list = document.getElementById('portfolio-list');
+  list.innerHTML = staticData.portfolio.map(p => `
+    <div class="project-item">
+      <div class="project-badge" style="background: ${p.color};"></div>
+      <div style="flex:1">
+        <div class="proj-title">${p.title}</div>
+        <div class="proj-desc">${p.desc}</div>
+        <div class="proj-footer">
+          <div class="proj-pct">${p.status}</div>
+          <div class="mini-bar"><div class="mini-fill" style="width:${p.progress}%; background:${p.color};"></div></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderRisks() {
+  const list = document.getElementById('risks-list');
+  list.innerHTML = staticData.risks.map(r => `
+    <div class="risk-item">
+      <div class="risk-level ${r.class}">${r.level}</div>
+      <div>
+        <div class="risk-text">${r.text}</div>
+        <div class="risk-sub">${r.sub}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderActivity() {
+  const list = document.getElementById('activity-list');
+  list.innerHTML = staticData.activity.map(a => `
+    <div class="activity-item">
+      <div class="activity-time">${a.time}</div>
+      <div class="activity-dot" style="background: ${a.color};"></div>
+      <div class="activity-content">
+        <div class="activity-msg">${a.msg}</div>
+        <div class="activity-agent">${a.agent}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateFooter() {
+  document.getElementById('stat-projects').textContent = staticData.projects.length;
+  document.getElementById('stat-agents').textContent = staticData.agents.length;
+  document.getElementById('stat-sites').textContent = staticData.portfolio.filter(p => p.status === 'LIVE').length;
+  document.getElementById('stat-words').textContent = '52K';
+  document.getElementById('stat-blocked').textContent = staticData.risks.filter(r => r.level === 'BLOCK').length;
+  
+  const now = new Date();
+  const est = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  document.getElementById('last-updated').textContent = est.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ==================== WEBSOCKET ARCHITECTURE ====================
+// This demonstrates the real-time update architecture
+// In production, connect to actual WebSocket server
+
+class DashboardWebSocket {
+  constructor(url) {
+    this.url = url;
+    this.ws = null;
+    this.reconnectInterval = 5000;
+    this.reconnectTimer = null;
+  }
+  
+  connect() {
+    console.log('[WebSocket] Attempting connection...');
+    // In production: this.ws = new WebSocket(this.url);
+    
+    // Demo mode - simulate connection
+    this.onOpen();
+  }
+  
+  onOpen() {
+    console.log('[WebSocket] Connected');
+    // Start heartbeat
+    this.heartbeatInterval = setInterval(() => this.sendHeartbeat(), 30000);
+  }
+  
+  onMessage(data) {
+    // Handle different message types
+    switch(data.type) {
+      case 'metrics_update':
+        this.updateMetrics(data.payload);
+        break;
+      case 'task_update':
+        this.updateTasks(data.payload);
+        break;
+      case 'activity_new':
+        this.addActivity(data.payload);
+        break;
+      case 'status_change':
+        this.updateStatus(data.payload);
+        break;
+    }
+  }
+  
+  sendHeartbeat() {
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({ type: 'heartbeat', timestamp: Date.now() }));
+    }
+  }
+  
+  // Fallback to polling if WebSocket unavailable
+  startPolling(interval = 30000) {
+    console.log('[Polling] Starting fallback polling every', interval, 'ms');
+    setInterval(() => this.pollForUpdates(), interval);
+  }
+  
+  async pollForUpdates() {
+    try {
+      const response = await fetch('data.json');
+      if (response.ok) {
+        const data = await response.json();
+        // Process updates
+        console.log('[Polling] Data refreshed', data);
+      }
+    } catch (e) {
+      console.log('[Polling] Error:', e);
+    }
+  }
+  
+  // Update handlers
+  updateMetrics(payload) {
+    // Update chart data
+    console.log('[WebSocket] Metrics updated', payload);
+  }
+  
+  updateTasks(payload) {
+    // Re-render tasks
+    console.log('[WebSocket] Tasks updated', payload);
+  }
+  
+  addActivity(payload) {
+    // Prepend new activity
+    console.log('[WebSocket] New activity', payload);
+  }
+  
+  updateStatus(payload) {
+    // Update status indicator
+    console.log('[WebSocket] Status changed', payload);
+  }
+}
+
+// ==================== INITIALIZATION ====================
+function init() {
+  // Render all components
+  renderProjects();
+  renderAgents();
+  renderTasks();
+  renderMetricsChart();
+  renderMetricSummary();
+  renderPortfolio();
+  renderRisks();
+  renderActivity();
+  updateFooter();
+  
+  // Animate progress bars
+  setTimeout(() => {
+    document.querySelectorAll('.task-progress, .mini-fill').forEach(el => {
+      const target = el.style.width;
+      el.style.width = '0%';
+      setTimeout(() => {
+        el.style.transition = 'width 0.8s cubic-bezier(0.4,0,0.2,1)';
+        el.style.width = target;
+      }, 100);
+    });
+  }, 200);
+  
+  // Initialize WebSocket connection
+  const ws = new DashboardWebSocket('ws://localhost:8080/ws');
+  ws.connect();
+  ws.startPolling(30000); // Fallback polling every 30s
+  
+  // Load dynamic data
+  loadData();
+}
+
+// Load dynamic data from data.json
+async function loadData() {
+  try {
+    const response = await fetch('data.json');
+    if (response.ok) {
+      const data = await response.json();
+      
+      // Update status from infrastructure
+      if (data.infrastructure) {
+        const sites = ['diskprices', 'easyhtpc', 'snapmender'];
+        const online = sites.filter(s => data.infrastructure[s]?.status === 'online').length;
+        
+        // Update metric
+        staticData.metrics[0].value = online;
+        renderMetricSummary();
+      }
+      
+      // Update backup status
+      if (data.backups?.nextBackup) {
+        console.log('Next backup:', data.backups.nextBackup);
+      }
+      
+      // Update last updated
+      if (data.lastUpdated) {
+        document.getElementById('last-updated').textContent = 
+          new Date(data.lastUpdated).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      }
+      
+      // Add activity from data
+      if (data.activity && data.activity.length > 0) {
+        const latestActivity = data.activity[0];
+        const exists = staticData.activity.some(a => a.msg === latestActivity.message);
+        if (!exists) {
+          staticData.activity.unshift({
+            time: 'NOW',
+            color: '#00ff99',
+            msg: latestActivity.message,
+            agent: latestActivity.agent + ' · SYSTEM'
+          });
+          staticData.activity = staticData.activity.slice(0, 7);
+          renderActivity();
+        }
+      }
+    }
+  } catch (e) {
+    console.log('Using static data (data.json not available)');
+  }
+}
+
+// Start the dashboard
+init();
+
+// Refresh every 30 seconds
+setInterval(loadData, 30000);
+</script>
+
+</body>
+</html>
